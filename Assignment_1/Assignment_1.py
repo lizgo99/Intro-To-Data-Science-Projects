@@ -2,21 +2,19 @@
 
 import numpy as np
 
-
 A = np.array([[2,1,2],
-     [1,-2,1],
-     [1,2,3],
-     [1,1,1]])
+              [1,-2,1],
+              [1,2,3],
+              [1,1,1]])
 
 b = np.array([6,
-     1,
-     5,
-     2]).reshape(4,1)
+              1,
+              5,
+              2]).reshape(4,1)
 
 x = np.linalg.lstsq(A,b,rcond=None)
 
 aproximated_x = np.array(x[0]).reshape(3,1)
-
 
 print("This is the best approximation in the least square sense for the system Ax = b : ")
 print(aproximated_x)
@@ -115,13 +113,10 @@ print(D)
 
 import pandas as pd
 import numpy as np
-from scipy.stats import norm
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 
-
-file_path = "/Users/lizgokhvat/Desktop/SPL Assignments/Intro-To-Data-Science/Assignment-1/insurData.csv"
-
+file_path = "/Users/lizgokhvat/Desktop/Projects/Intro_To_Data_Science_Projects/Assignment_1/insurData.csv"
 df = pd.read_csv(file_path)
 
 print('\nNumber of rows and columns in data set: (rows, columns) :', df.shape)
@@ -138,6 +133,8 @@ df = pd.get_dummies(df)
 X = df[['s', 'age', 'sex_male', 'sex_female', 'bmi', 'children', 'smoker_yes', 'smoker_no',  'region_northeast', 'region_northwest', 'region_southeast', 'region_southwest']]
 y = df[['charges']]
 
+X = X.astype(np.float64)
+y = y.astype(np.float64)
 
 for i in range(1,6):
 
@@ -145,17 +142,17 @@ for i in range(1,6):
 
     print(f"experiments no. {i}")
 
-    LS_x = np.linalg.lstsq(X_train,y_train)
+    LS_x = np.linalg.lstsq(X_train, y_train, rcond=None)
     print("Least Squares Solution for train:")
     print(LS_x[0])
 
     M_train = np.dot(X_train, LS_x[0]) - y_train
-    MSE_Train = (1/1070)*(np.linalg.norm(M_train))**2
+    MSE_Train = (1/X_train.shape[0])*(np.linalg.norm(M_train))**2
     print("Train MSE:")
     print(MSE_Train)
 
     M_test = np.dot(X_test, LS_x[0]) - y_test
-    MSE_Test = (1/268)*(np.linalg.norm(M_test))**2
+    MSE_Test = (1/X_train.shape[0])*(np.linalg.norm(M_test))**2
     print("Test MSE:")
     print(MSE_Test)
 
@@ -165,12 +162,12 @@ for i in range(1,6):
 
     print("-----------------------------------------------------------------------")
 
-plt.hist(M_train.to_numpy(), bins=200)
-plt.title('Error Distribution')
-plt.xlabel('error')
-plt.ylabel('error frequency')
-plt.legend()
-plt.show()
+# plt.hist(M_train.to_numpy(), bins=200)
+# plt.title('Error Distribution')
+# plt.xlabel('error')
+# plt.ylabel('error frequency')
+# plt.legend()
+# plt.show()
 
 
 
